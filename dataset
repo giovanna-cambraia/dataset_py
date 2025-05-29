@@ -1,0 +1,36 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Carregando o dataset (simulado aqui como CSV local)
+df = pd.read_csv('acidentes_brasil_2019.csv')
+
+# Gráfico 1: Barras por estado
+df_estado = df['estado'].value_counts().sort_values(ascending=False)
+plt.figure(figsize=(12, 6))
+df_estado.plot(kind='bar', color='skyblue')
+plt.title('Acidentes por Estado - 2019')
+plt.xlabel('Estado')
+plt.ylabel('Número de Acidentes')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico 2: Linha temporal por mês
+df['data'] = pd.to_datetime(df['data'])
+df['mes'] = df['data'].dt.month
+df_mensal = df.groupby('mes').size()
+plt.figure(figsize=(10, 5))
+plt.plot(df_mensal.index, df_mensal.values, marker='o')
+plt.title('Acidentes por Mês - 2019')
+plt.xlabel('Mês')
+plt.ylabel('Número de Acidentes')
+plt.grid(True)
+plt.show()
+
+# Gráfico 3: Dispersão (vítimas x tipo de via)
+sns.scatterplot(data=df, x='tipo_via', y='num_vitimas', alpha=0.6)
+plt.title('Correlação entre Tipo de Via e Número de Vítimas')
+plt.xlabel('Tipo de Via')
+plt.ylabel('Número de Vítimas')
+plt.show()
